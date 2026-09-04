@@ -10,4 +10,10 @@ export class Mock {
 
   @Column()
   test: string;
+
+  @Column({ name: 'test_mod' })
+  testMod: string;
+
+  @Column({ name: 'test_mod2' })
+  testMod2: string;
 }

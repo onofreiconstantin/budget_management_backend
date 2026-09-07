@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { ConfigService } from '@nestjs/config';
-import { Mock } from '../mock/mock.entity';
+import { User } from '../users/users.entity';
 import { DataSourceOptions } from 'typeorm';
 
 export const getTypeOrmConfig = (
@@ -12,7 +12,7 @@ export const getTypeOrmConfig = (
   username: configService.getOrThrow<string>('DB_USERNAME'),
   password: configService.getOrThrow<string>('DB_PASSWORD'),
   database: configService.getOrThrow<string>('DB_NAME'),
-  entities: [Mock],
+  entities: [User],
   migrations: [join(__dirname, '..', 'migrations', '*{.ts,.js}')],
   synchronize: false,
 });

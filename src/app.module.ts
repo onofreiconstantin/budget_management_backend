@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MockModule } from './mock/mock.module';
+import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getTypeOrmConfig } from './database/typeorm.config';
@@ -17,7 +17,7 @@ import { getTypeOrmConfig } from './database/typeorm.config';
       useFactory: (configService: ConfigService) =>
         getTypeOrmConfig(configService),
     }),
-    MockModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

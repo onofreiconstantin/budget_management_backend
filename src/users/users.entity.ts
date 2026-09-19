@@ -7,7 +7,9 @@ import {
   OneToMany,
   JoinColumn,
   ManyToOne,
+  OneToOne,
 } from 'typeorm';
+import { Document } from '../documents/documents.entity';
 
 @Entity()
 export class User {
@@ -33,10 +35,6 @@ export class User {
   @Column({ name: 'stripe_customer_id', type: 'varchar', nullable: true })
   stripeCustomerId: string | null;
 
-  //TODO: Connect to the files table later on
-  // @Column({ name: 'avatar_id', nullable: true })
-  // avatarId: string | null;
-
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt: Date;
 
@@ -46,10 +44,21 @@ export class User {
   @Column({ name: 'archived_at', type: 'timestamptz', nullable: true })
   archivedAt: Date | null;
 
+  @Column({ name: 'archived_by_id', type: 'uuid', nullable: true })
+  archivedById: string | null;
+
   @ManyToOne(() => User, (user) => user.archivedUsers, { nullable: true })
-  @JoinColumn({ name: 'archived_by' })
+  @JoinColumn({ name: 'archived_by_id' })
   archivedBy: User | null;
 
   @OneToMany(() => User, (user) => user.archivedBy)
   archivedUsers: User[];
+
+  @OneToOne(() => Document, (document) => document.avatarUser, {
+    nullable: true,
+  })
+  avatar: Document | null;
+
+  @OneToMany(() => Document, (document) => document.user)
+  documents: Document[];
 }

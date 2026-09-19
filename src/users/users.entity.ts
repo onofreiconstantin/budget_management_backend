@@ -10,8 +10,9 @@ import {
   OneToOne,
 } from 'typeorm';
 import { Document } from '../documents/documents.entity';
+import { Subscription } from '../subscriptions/subscriptions.entity';
 
-@Entity()
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -61,4 +62,9 @@ export class User {
 
   @OneToMany(() => Document, (document) => document.user)
   documents: Document[];
+
+  @OneToOne(() => Subscription, (subscription) => subscription.user, {
+    nullable: true,
+  })
+  subscription: Subscription | null;
 }

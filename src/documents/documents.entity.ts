@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { User } from '../users/users.entity';
 
-@Entity()
+@Entity('documents')
 @Check('num_nonnulls("avatar_user_id", "user_id") = 1')
 export class Document {
   @PrimaryGeneratedColumn('uuid')
@@ -29,7 +29,7 @@ export class Document {
   mimeType: string;
 
   @Column({ name: 'size_bytes', type: 'bigint' })
-  sizeBytes: number;
+  sizeBytes: string;
 
   @Column({ name: 'checksum' })
   checksum: string;
@@ -40,7 +40,7 @@ export class Document {
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
   updatedAt: Date;
 
-  @Column({ name: 'avatar_user_id', type: 'uuid', nullable: true })
+  @Column({ name: 'avatar_user_id', type: 'uuid', nullable: true, unique: true })
   avatarUserId: string | null;
 
   @OneToOne(() => User, (user) => user.avatar, { nullable: true })

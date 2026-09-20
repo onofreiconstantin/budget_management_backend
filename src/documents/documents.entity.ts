@@ -10,9 +10,10 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../users/users.entity';
+import { OrganizationUser } from '../organization-users/organization-users.entity';
 
 @Entity('documents')
-@Check('num_nonnulls("avatar_user_id", "user_id") = 1')
+@Check('num_nonnulls("avatar_user_id", "user_id", "organization_user_id") = 1')
 export class Document {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -40,7 +41,12 @@ export class Document {
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
   updatedAt: Date;
 
-  @Column({ name: 'avatar_user_id', type: 'uuid', nullable: true, unique: true })
+  @Column({
+    name: 'avatar_user_id',
+    type: 'uuid',
+    nullable: true,
+    unique: true,
+  })
   avatarUserId: string | null;
 
   @OneToOne(() => User, (user) => user.avatar, { nullable: true })
@@ -53,6 +59,17 @@ export class Document {
   @ManyToOne(() => User, (user) => user.documents, { nullable: true })
   @JoinColumn({ name: 'user_id' })
   user: User | null;
+
+  @Column({ name: 'organization_user_id', type: 'uuid', nullable: true })
+  organizationUserId: string | null;
+
+  @ManyToOne(
+    () => OrganizationUser,
+    (organizationUser) => organizationUser.documents,
+    { nullable: true },
+  )
+  @JoinColumn({ name: 'organization_user_id' })
+  organizationUser: OrganizationUser | null;
 
   @Column({ name: 'archived_at', type: 'timestamptz', nullable: true })
   archivedAt: Date | null;

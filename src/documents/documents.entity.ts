@@ -117,14 +117,4 @@ export class Document {
   })
   @JoinColumn({ name: 'transaction_id' })
   transaction: Transaction | null;
-
-  @Column({ name: 'archived_at', type: 'timestamptz', nullable: true })
-  archivedAt: Date | null;
-
-  @Column({ name: 'archived_by_id', type: 'uuid', nullable: true })
-  archivedById: string | null;
-
-  @ManyToOne(() => User, { nullable: true })
-  @JoinColumn({ name: 'archived_by_id' })
-  archivedBy: User | null;
 }

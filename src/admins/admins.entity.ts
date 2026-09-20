@@ -50,12 +50,15 @@ export class Admin {
   @Column({ name: 'archived_by_id', type: 'uuid', nullable: true })
   archivedById: string | null;
 
-  @ManyToOne(() => User, { nullable: true })
+  @ManyToOne(() => Admin, (admin) => admin.archivedAdmins, { nullable: true })
   @JoinColumn({ name: 'archived_by_id' })
-  archivedBy: User | null;
+  archivedBy: Admin | null;
 
   @OneToMany(() => Admin, (admin) => admin.grantedBy)
   grantedAdmins: Admin[];
+
+  @OneToMany(() => Admin, (admin) => admin.archivedBy)
+  archivedAdmins: Admin[];
 
   @OneToMany(() => Document, (document) => document.admin)
   documents: Document[];

@@ -35,7 +35,12 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ name: 'stripe_customer_id', type: 'varchar', nullable: true })
+  @Column({
+    name: 'stripe_customer_id',
+    type: 'varchar',
+    nullable: true,
+    unique: true,
+  })
   stripeCustomerId: string | null;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })

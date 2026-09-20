@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -9,7 +10,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from '../users/users.entity';
 import { Organization } from '../organizations/organizations.entity';
 import { OrganizationUser } from '../organization-users/organization-users.entity';
 import { Document } from '../documents/documents.entity';
@@ -22,6 +22,7 @@ export class TransactionEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Index('idx_transaction_entities_organization_id')
   @Column({ name: 'organization_id', type: 'uuid' })
   organizationId: string;
 
@@ -42,8 +43,8 @@ export class TransactionEntity {
   @Column()
   name: string;
 
-  @Column({ type: 'enum', enum: TransactionEntityType })
-  type: TransactionEntityType;
+  @Column({ type: 'enum', enum: TransactionEntityType, array: true })
+  types: TransactionEntityType[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt: Date;
@@ -57,9 +58,9 @@ export class TransactionEntity {
   @Column({ name: 'archived_by_id', type: 'uuid', nullable: true })
   archivedById: string | null;
 
-  @ManyToOne(() => User, { nullable: true })
+  @ManyToOne(() => OrganizationUser, { nullable: true })
   @JoinColumn({ name: 'archived_by_id' })
-  archivedBy: User | null;
+  archivedBy: OrganizationUser | null;
 
   @OneToOne(() => Document, (document) => document.transactionEntity, {
     nullable: true,

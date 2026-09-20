@@ -56,9 +56,9 @@ export class OrganizationUser {
   @Column({ name: 'archived_by_id', type: 'uuid', nullable: true })
   archivedById: string | null;
 
-  @ManyToOne(() => User, { nullable: true })
+  @ManyToOne(() => OrganizationUser, { nullable: true })
   @JoinColumn({ name: 'archived_by_id' })
-  archivedBy: User | null;
+  archivedBy: OrganizationUser | null;
 
   @OneToMany(() => Document, (document) => document.organizationUser)
   documents: Document[];

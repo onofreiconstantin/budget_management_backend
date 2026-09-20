@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -17,6 +18,7 @@ export class OrganizationInvitation {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Index('idx_organization_invitations_organization_id')
   @Column({ name: 'organization_id', type: 'uuid' })
   organizationId: string;
 

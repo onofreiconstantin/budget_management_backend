@@ -1,16 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { User } from './users.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-
+import { UsersDomain } from './users.domain';
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(User)
-    private readonly repo: Repository<User>,
-  ) {}
+  constructor(private readonly usersDomain: UsersDomain) {}
 
-  findAll(): Promise<User[]> {
-    return this.repo.find();
+  findAll() {
+    return this.usersDomain.findAll();
   }
 }

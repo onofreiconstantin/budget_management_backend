@@ -5,31 +5,22 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
-  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../users/users.entity';
 import { Organization } from '../organizations/organizations.entity';
-import { OrganizationInvitation } from '../organization-invitations/organization-invitations.entity';
-import { OrganizationPermission } from '../common/enums';
+import { OrganizationUser } from '../organization-users/organization-users.entity';
 import { Document } from '../documents/documents.entity';
-import { TransactionEntity } from '../transaction-entities/transaction-entities.entity';
 import { Estimation } from '../estimations/estimations.entity';
 import { Transaction } from '../transactions/transactions.entity';
+import { TransactionEntityType } from './utils/enums';
 
-@Entity('organization_users')
-@Unique(['userId', 'organizationId'])
-export class OrganizationUser {
+@Entity('transaction_entities')
+export class TransactionEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column({ name: 'user_id', type: 'uuid' })
-  userId: string;
-
-  @ManyToOne(() => User, (user) => user.organizationUsers)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
 
   @Column({ name: 'organization_id', type: 'uuid' })
   organizationId: string;
@@ -38,11 +29,21 @@ export class OrganizationUser {
   @JoinColumn({ name: 'organization_id' })
   organization: Organization;
 
-  @Column({ name: 'is_owner', type: 'boolean', default: false })
-  isOwner: boolean;
+  @Column({ name: 'created_by_id', type: 'uuid' })
+  createdById: string;
 
-  @Column({ type: 'enum', enum: OrganizationPermission, array: true })
-  permissions: OrganizationPermission[];
+  @ManyToOne(
+    () => OrganizationUser,
+    (organizationUser) => organizationUser.transactionEntities,
+  )
+  @JoinColumn({ name: 'created_by_id' })
+  createdBy: OrganizationUser;
+
+  @Column()
+  name: string;
+
+  @Column({ type: 'enum', enum: TransactionEntityType })
+  type: TransactionEntityType;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt: Date;
@@ -60,21 +61,14 @@ export class OrganizationUser {
   @JoinColumn({ name: 'archived_by_id' })
   archivedBy: User | null;
 
-  @OneToMany(() => Document, (document) => document.organizationUser)
-  documents: Document[];
+  @OneToOne(() => Document, (document) => document.transactionEntity, {
+    nullable: true,
+  })
+  logo: Document | null;
 
-  @OneToMany(() => OrganizationInvitation, (invitation) => invitation.invitedBy)
-  invitations: OrganizationInvitation[];
-
-  @OneToMany(
-    () => TransactionEntity,
-    (transactionEntity) => transactionEntity.createdBy,
-  )
-  transactionEntities: TransactionEntity[];
-
-  @OneToMany(() => Estimation, (estimation) => estimation.createdBy)
+  @OneToMany(() => Estimation, (estimation) => estimation.transactionEntity)
   estimations: Estimation[];
 
-  @OneToMany(() => Transaction, (transaction) => transaction.createdBy)
+  @OneToMany(() => Transaction, (transaction) => transaction.transactionEntity)
   transactions: Transaction[];
 }

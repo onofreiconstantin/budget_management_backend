@@ -7,9 +7,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from '../users/users.entity';
 import { Organization } from '../organizations/organizations.entity';
-import { OrganizationPermission } from '../organization-users/utils/enums';
+import { OrganizationUser } from '../organization-users/organization-users.entity';
+import { OrganizationPermission } from '../common/enums';
 import { InvitationStatus } from './utils/enums';
 
 @Entity('organization_invitations')
@@ -53,9 +53,12 @@ export class OrganizationInvitation {
   @Column({ name: 'invited_by_id', type: 'uuid' })
   invitedById: string;
 
-  @ManyToOne(() => User, (user) => user.invitations)
+  @ManyToOne(
+    () => OrganizationUser,
+    (organizationUser) => organizationUser.invitations,
+  )
   @JoinColumn({ name: 'invited_by_id' })
-  invitedBy: User;
+  invitedBy: OrganizationUser;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt: Date;

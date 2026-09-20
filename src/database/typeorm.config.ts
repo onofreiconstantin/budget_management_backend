@@ -9,6 +9,10 @@ import { Currency } from '../currencies/currencies.entity';
 import { Organization } from '../organizations/organizations.entity';
 import { OrganizationInvitation } from '../organization-invitations/organization-invitations.entity';
 import { OrganizationUser } from '../organization-users/organization-users.entity';
+import { Admin } from '../admins/admins.entity';
+import { TransactionEntity } from '../transaction-entities/transaction-entities.entity';
+import { Estimation } from '../estimations/estimations.entity';
+import { Transaction } from '../transactions/transactions.entity';
 
 export const getTypeOrmConfig = (
   configService: ConfigService,
@@ -28,6 +32,10 @@ export const getTypeOrmConfig = (
     Organization,
     OrganizationUser,
     OrganizationInvitation,
+    Admin,
+    TransactionEntity,
+    Estimation,
+    Transaction,
   ],
   migrations: [join(__dirname, '..', 'migrations', '*{.ts,.js}')],
   synchronize: false,

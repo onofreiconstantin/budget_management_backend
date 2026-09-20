@@ -12,7 +12,7 @@ import {
 import { Document } from '../documents/documents.entity';
 import { Subscription } from '../subscriptions/subscriptions.entity';
 import { OrganizationUser } from '../organization-users/organization-users.entity';
-import { OrganizationInvitation } from '../organization-invitations/organization-invitations.entity';
+import { Admin } from '../admins/admins.entity';
 
 @Entity('users')
 export class User {
@@ -76,6 +76,6 @@ export class User {
   )
   organizationUsers: OrganizationUser[];
 
-  @OneToMany(() => OrganizationInvitation, (invitation) => invitation.invitedBy)
-  invitations: OrganizationInvitation[];
+  @OneToOne(() => Admin, (admin) => admin.user, { nullable: true })
+  admin: Admin | null;
 }

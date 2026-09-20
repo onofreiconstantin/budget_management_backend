@@ -12,7 +12,13 @@ export enum OrganizationPermission {
   ESTIMATIONS_VIEW_ALL = 'estimations_view_all',
   ESTIMATIONS_MANAGE_OWN = 'estimations_manage_own',
   ESTIMATIONS_MANAGE_ALL = 'estimations_manage_all',
+  ORGANIZATION_VIEW = 'organization_view',
   ORGANIZATION_MANAGE = 'organization_manage',
   ANALYTICS_VIEW_OWN = 'analytics_view_own',
   ANALYTICS_VIEW_ALL = 'analytics_view_all',
+}
+
+export enum TransactionType {
+  INCOME = 'income',
+  EXPENSE = 'expense',
 }

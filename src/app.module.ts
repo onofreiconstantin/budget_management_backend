@@ -8,6 +8,7 @@ import { getTypeOrmConfig } from './database/typeorm.config';
 import { APP_PIPE } from '@nestjs/core';
 import connectPgSimple = require('connect-pg-simple');
 import session = require('express-session');
+import { SESSION_MAX_AGE } from './common/constants.utils';
 
 const PostgresSessionStore = connectPgSimple(session);
 
@@ -58,6 +59,7 @@ export class AppModule {
           cookie: {
             httpOnly: true,
             sameSite: 'lax',
+            maxAge: SESSION_MAX_AGE,
             secure:
               this.configService.getOrThrow<string>('NODE_ENV') !==
               'development',

@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { Organization } from '../organizations/organizations.entity';
 import { OrganizationUser } from '../organization-users/organization-users.entity';
-import { OrganizationPermission } from '../common/enums';
+import { OrganizationPermission } from '../common/enums.utils';
 import { InvitationStatus } from './utils/enums.utils';
 
 @Entity('organization_invitations')

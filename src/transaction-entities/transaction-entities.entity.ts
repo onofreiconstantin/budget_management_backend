@@ -15,7 +15,7 @@ import { OrganizationUser } from '../organization-users/organization-users.entit
 import { Document } from '../documents/documents.entity';
 import { Estimation } from '../estimations/estimations.entity';
 import { Transaction } from '../transactions/transactions.entity';
-import { TransactionEntityType } from './utils/enums';
+import { TransactionEntityType } from './utils/enums.utils';
 
 @Entity('transaction_entities')
 export class TransactionEntity {

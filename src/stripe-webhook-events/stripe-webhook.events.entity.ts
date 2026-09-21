@@ -6,8 +6,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { StripeWebhookEventStatus } from './utils/enums';
-import { StripeWebhookEventAttempt } from './utils/types';
+import { StripeWebhookEventStatus } from './utils/enums.utils';
+import { StripeWebhookEventAttempt } from './utils/types.utils';
 
 @Entity('stripe_webhook_events')
 export class StripeWebhookEvent {

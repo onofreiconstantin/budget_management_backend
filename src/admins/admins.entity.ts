@@ -10,7 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../users/users.entity';
-import { AdminPermission } from './utils/enums';
+import { AdminPermission } from './utils/enums.utils';
 import { Document } from '../documents/documents.entity';
 
 @Entity('admins')

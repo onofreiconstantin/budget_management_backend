@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
-import { Repository } from 'typeorm';
+import { FindOptionsRelations, Repository } from 'typeorm';
+import { UpdateUserDto } from './dtos/update-user.dto';
+import { CreateUserDto } from './dtos/create-user.dto';
 
 @Injectable()
 export class UsersDomain {
@@ -10,7 +12,48 @@ export class UsersDomain {
     private readonly repo: Repository<User>,
   ) {}
 
-  findAll() {
-    return this.repo.find();
+  create(input: CreateUserDto) {
+    const data = this.repo.create(input);
+
+    return this.repo.save(data);
+  }
+
+  findOne(id: string, relations?: FindOptionsRelations<User>) {
+    return this.repo.findOne({
+      where: {
+        id,
+      },
+      relations,
+    });
+  }
+
+  find(email: string) {
+    return this.repo.find({
+      where: {
+        email,
+      },
+    });
+  }
+
+  async update(id: string, input: UpdateUserDto) {
+    const data = await this.findOne(id);
+
+    if (!data) {
+      throw new NotFoundException('User not found');
+    }
+
+    Object.assign(data, input);
+
+    return this.repo.save(data);
+  }
+
+  async remove(id: string) {
+    const data = await this.findOne(id);
+
+    if (!data) {
+      throw new NotFoundException('User not found');
+    }
+
+    return this.repo.remove(data);
   }
 }

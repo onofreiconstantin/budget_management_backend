@@ -7,8 +7,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { SubscriptionTier } from './utils/enums';
-import { SubscriptionStatus } from './utils/types';
+import { SubscriptionTier } from './utils/enums.utils';
+import { SubscriptionStatus } from './utils/types.utils';
 import { User } from '../users/users.entity';
 
 @Entity('subscriptions')

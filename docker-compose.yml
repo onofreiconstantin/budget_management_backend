@@ -3,13 +3,13 @@ services:
     image: postgres:18
     container_name: budget_management
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: budget_management
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
       - pgdata:/var/lib/postgresql
     ports:
-      - '5432:5432'
+      - '${DB_PORT}:5432'
 
 volumes:
   pgdata:

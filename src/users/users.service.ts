@@ -4,6 +4,7 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { FindOptionsRelations } from 'typeorm';
 import { User } from './users.entity';
+import type { Session, SessionData } from 'express-session';
 @Injectable()
 export class UsersService {
   constructor(private readonly usersDomain: UsersDomain) {}
@@ -26,15 +27,11 @@ export class UsersService {
     return user;
   }
 
-  find(email: string) {
-    return this.usersDomain.find(email);
-  }
-
   update(id: string, input: UpdateUserDto) {
     return this.usersDomain.update(id, input);
   }
 
-  remove(id: string) {
-    return this.usersDomain.remove(id);
+  archive(id: string, session: Session & Partial<SessionData>) {
+    return this.usersDomain.archive(id, session);
   }
 }

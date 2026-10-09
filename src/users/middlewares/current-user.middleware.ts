@@ -1,6 +1,7 @@
-import { Injectable, NestMiddleware, NotFoundException } from '@nestjs/common';
+import { Injectable, NestMiddleware } from '@nestjs/common';
 import { UsersService } from '../users.service';
 import { Request, Response, NextFunction } from 'express';
+import { destroySession } from '../../common/sessions.utils';
 
 @Injectable()
 export class CurrentUserMiddleware implements NestMiddleware {
@@ -14,17 +15,8 @@ export class CurrentUserMiddleware implements NestMiddleware {
         admin: true,
       });
 
-      if (!user) {
-        await new Promise<void>((resolve, reject) => {
-          req.session.destroy((error) => {
-            if (error) {
-              reject(error);
-              return;
-            }
-
-            resolve();
-          });
-        });
+      if (!user || user.archivedAt) {
+        await destroySession(req.session);
 
         return next();
       }

@@ -1,9 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
 import { FindOptionsRelations, Repository } from 'typeorm';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
+import type { Session, SessionData } from 'express-session';
 
 @Injectable()
 export class UsersDomain {
@@ -27,8 +32,8 @@ export class UsersDomain {
     });
   }
 
-  find(email: string) {
-    return this.repo.find({
+  findByEmail(email: string) {
+    return this.repo.findOne({
       where: {
         email,
       },
@@ -47,13 +52,20 @@ export class UsersDomain {
     return this.repo.save(data);
   }
 
-  async remove(id: string) {
-    const data = await this.findOne(id);
+  async archive(id: string, session: Session & Partial<SessionData>) {
+    const data = await this.findOne(id, { admin: true });
 
     if (!data) {
       throw new NotFoundException('User not found');
     }
 
-    return this.repo.remove(data);
+    if (data.admin?.isOwner) {
+      throw new ForbiddenException('User cannot be archived');
+    }
+
+    data.archivedAt = new Date();
+    data.archivedById = session.userId ?? null;
+
+    return this.repo.save(data);
   }
 }
